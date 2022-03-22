@@ -33,20 +33,21 @@ async function run() {
         // GET API
         app.post('/downloadPersonal', async (req, res) => {
             const loginData = req.body;
-            const {projectBased,projectTime}=loginData;
+            const { projectBased, projectTime } = loginData;
             // console.log(projectBased,projectTime,loginData)
             const extractor = new WordExtractor();
             const extracted = extractor.extract(readFileName);
             let text = ''
             await extracted.then(function (doc) { text = doc.getBody(); });
             // console.log(text)
+            // replace the things which needed
             let replacedName = await text.replace(/projectName/g, projectBased)
             let replacedMonths = await replacedName.replace(/projectMonth/g, projectTime)
             // split the array for difference the heder and text
             const myArray = await replacedMonths.split("\n\n\n");
             const userHeder = await myArray[0]
             const userText = await myArray[1]
-
+            // make  sting for file
             const doc = new Document({
                 sections: [{
                     properties: {},
@@ -74,6 +75,7 @@ async function run() {
                     ],
                 }],
             });
+            // now write the string on file
             await Packer.toBuffer(doc).then((buffer) => {
                 fs.writeFileSync(writeFileName, buffer);
             });
