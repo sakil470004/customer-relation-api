@@ -10,7 +10,7 @@ const readFileName = 'template.doc';
 const writeFileName = 'proposal.doc';
 const fs = require('fs');
 const port = process.env.PORT || 5000;
-let text = '';
+
 // middleware
 app.use(cors());
 app.use(express.json());
@@ -31,14 +31,18 @@ async function run() {
         const usersCollection = database.collection('users');
 
         // GET API
-        app.get('/downloadPersonal', async (req, res) => {
+        app.post('/downloadPersonal', async (req, res) => {
+            const loginData = req.body;
+            const {projectBased,projectTime}=loginData;
+            // console.log(projectBased,projectTime,loginData)
             const extractor = new WordExtractor();
             const extracted = extractor.extract(readFileName);
-
+            let text = ''
             await extracted.then(function (doc) { text = doc.getBody(); });
             // console.log(text)
-            let replacedName = await text.replace(/projectName/g, 'Sakil')
-            let replacedMonths = await replacedName.replace(/projectMonth/g, '7 month')
+            let replacedName = await text.replace(/projectName/g, projectBased)
+            let replacedMonths = await replacedName.replace(/projectMonth/g, projectTime)
+            // split the array for difference the heder and text
             const myArray = await replacedMonths.split("\n\n\n");
             const userHeder = await myArray[0]
             const userText = await myArray[1]
