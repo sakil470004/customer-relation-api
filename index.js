@@ -32,7 +32,11 @@ async function run() {
         const usersCollection = database.collection('users');
 
         // GET API
+        app.get('/', async (req, res) => {
+                res.json({hi:'OK EVERYTHING'})
+        })
 
+        // post api
         app.post('/downloadPersonal', async (req, res) => {
 
             const loginData = req.body;
@@ -72,6 +76,7 @@ async function run() {
             res.download('./proposal.doc')
         })
 
+// useless code may be i can learn from it in future
 
         // app.post('/downloadPersonal', async (req, res) => {
         //     const loginData = req.body;
