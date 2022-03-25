@@ -1,20 +1,21 @@
 const express = require('express');
 const { MongoClient } = require('mongodb');
-const { Document, Packer, Paragraph, TextRun } = require("docx");
 const PizZip = require("pizzip");
 const Docxtemplater = require("docxtemplater");
 const cors = require('cors');
+// middleware
 require('dotenv').config()
 const app = express();
-const WordExtractor = require("word-extractor");
-const readFileName = 'template.doc';
-const writeFileName = 'proposal.doc';
+app.use(express.json());
+app.use(cors());
 const fs = require('fs');
 const port = process.env.PORT || 5000;
+// const { Document, Packer, Paragraph, TextRun } = require("docx");
+// const WordExtractor = require("word-extractor");
+// const readFileName = 'template.doc';
+// const writeFileName = 'proposal.doc';
 
-// middleware
-app.use(cors());
-app.use(express.json());
+
 
 
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.poyqe.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
